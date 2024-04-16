@@ -11,14 +11,17 @@ app.use(cors());
 app.get("/user", getUser);
 
 app.get("/orders/pending", async (req, res) => {
-  
+
   const pendingOrders = await getPendingOrders();
   return res.send(pendingOrders);
+
 });
 
 app.get('/stores', async (req, res) => {
+
   const stores = await getStores();
   return res.send(stores);
+  
 });
 
 
