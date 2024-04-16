@@ -22,8 +22,6 @@ type Stores = {
     shopName: string
 };
 
-let listOfStores: Stores[][] = [];
-
 export async function getPendingOrders() {
 
     const saleOrdersFile = path.resolve('./data/orders.csv');
