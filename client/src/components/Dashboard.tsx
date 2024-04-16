@@ -33,18 +33,6 @@ export default function Dashboard() {
     //     orderValue: number;
     // }
 
-    interface Dataset2 {
-        id: number;
-        age: number;
-        // Add other properties as needed
-    }
-
-    const dataset2: Dataset2[] = [
-        { id: 1, age: 30 },
-        { id: 2, age: 25 },
-        // Add more dataset2 entries as needed
-    ];
-
     // a small component to display the contents of the table
     // const pendingOrderList: React.FC<PendingOrderListProps> = (props) => (
     //     <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -105,7 +93,8 @@ export default function Dashboard() {
             }
         };
 
-        const combinedData: { country: string, marketplace: string, shopName: string, orderId: string, orderValue: number, items: number, destination: string }[] = [];
+
+        const dashboardData: { country: string, marketplace: string, shopName: string, orderId: string, orderValue: number, items: number, destination: string }[] = [];
         const getAllPendingOrders = async () => {
             let storeKey: any;
             let orderKey: any;
@@ -113,7 +102,7 @@ export default function Dashboard() {
                 storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
                     pendingOrders.forEach((orderKey: { storeId: number; orderId: string; orderValue: number; items: number; destination: string }) => {
                         if (orderKey.storeId === storeKey.storeId) {
-                            combinedData.push({
+                            dashboardData.push({
                                 country: storeKey.country,
                                 marketplace: storeKey.marketplace,
                                 shopName: storeKey.shopName,
@@ -127,7 +116,7 @@ export default function Dashboard() {
                 });
 
                 setIsLoaded(true);
-                console.log("I am done", combinedData);
+                console.log("I am done", dashboardData);
                 return;
 
             } catch (error) {
