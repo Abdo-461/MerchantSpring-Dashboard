@@ -10,16 +10,18 @@ const port = 8080;
 app.use(cors());
 app.get("/user", getUser);
 
-app.get("/orders/pending", (req, res) => {
+app.get("/orders/pending", async (req, res) => {
   
-  const pendingOrders = getPendingOrders();
-  res.send(JSON.stringify(pendingOrders));
+  const pendingOrders = await getPendingOrders();
+  return res.send(pendingOrders);
 });
 
-app.get('/stores', (req, res) => {
-  const stores = getStores();
-  res.send(JSON.stringify(stores));
+app.get('/stores', async (req, res) => {
+  const stores = await getStores();
+  return res.send(stores);
 });
+
+
 
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);

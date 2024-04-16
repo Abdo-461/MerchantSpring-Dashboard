@@ -1,6 +1,7 @@
 import fs from 'fs';
-import path from 'path';
+import path, { resolve } from 'path';
 import { parse } from 'csv';
+import { rejects } from 'assert';
 
 type SaleOrders = {
     id: number,
@@ -13,30 +14,32 @@ type SaleOrders = {
     orderValue: number
 };
 
-export async function getPendingOrders() {
+type Stores = {
+    storedId: number,
+    marketplace: string,
+    country: string,
+    shopName: string
+};
 
+export async function getPendingOrders() {
     const saleOrdersFile = path.resolve('./data/orders.csv');
     const orderTableHeaders = ['id', 'storeId', 'orderId', 'latest_ship_date', 'shipment_status', 'destination', 'items', 'orderValue'];
     const ordersFileContent = fs.readFileSync(saleOrdersFile, { encoding: 'utf-8' });
 
-    try {
+    return new Promise((resolve, reject) => {
         parse(ordersFileContent, {
             delimiter: ',',
             columns: orderTableHeaders,
         }, (error, result: SaleOrders[]) => {
             if (error) {
                 console.error("Unable to fetch orders from file. For more info ->" + error);
+                reject(error);
+            } else {
+                const pendingOrders = result.filter(order => order.shipment_status === "Pending");
+                resolve(pendingOrders);
             }
-            
-            const pendingOrders = result.filter(shipmentStatus => shipmentStatus.shipment_status === "Pending");
-    
-            console.log("orders" , pendingOrders);
-    
         });
-
-    }catch(error) {
-        console.error(error);
-    }
+    });
 };
 
 export async function getStores() {
@@ -45,22 +48,18 @@ export async function getStores() {
     const orderTableHeaders = ['storeId', 'marketplace', 'country', 'shopName'];
     const ordersFileContent = fs.readFileSync(saleOrdersFile, { encoding: 'utf-8' });
 
-    try {
+    return new Promise((resolve, reject) => {
         parse(ordersFileContent, {
             delimiter: ',',
             columns: orderTableHeaders,
-        }, (error, result: SaleOrders[]) => {
+        }, (error, result: Stores[]) => {
             if (error) {
                 console.error("Unable to fetch orders from file. For more info ->" + error);
+                reject(error);
             }
-            
             const stores = result
-    
-            console.log("orders" , stores);
+            resolve(stores)
     
         });
-
-    }catch(error) {
-        console.error(error);
-    }
+    })
 };
