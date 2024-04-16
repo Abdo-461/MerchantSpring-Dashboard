@@ -21,7 +21,7 @@ app.get('/stores', async (req, res) => {
 
   const stores = await getStores();
   return res.send(stores);
-  
+
 });
 
 

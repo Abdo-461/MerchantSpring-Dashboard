@@ -2,6 +2,7 @@ import fs from 'fs';
 import path, { resolve } from 'path';
 import { parse } from 'csv';
 import { rejects } from 'assert';
+import { json } from 'stream/consumers';
 
 type SaleOrders = {
     id: number,
@@ -15,11 +16,13 @@ type SaleOrders = {
 };
 
 type Stores = {
-    storedId: number,
+    storeId: number,
     marketplace: string,
     country: string,
     shopName: string
 };
+
+let listOfStores: Stores[][] = [];
 
 export async function getPendingOrders() {
 
@@ -31,13 +34,14 @@ export async function getPendingOrders() {
         parse(ordersFileContent, {
             delimiter: ',',
             columns: orderTableHeaders,
-        }, (error, result: SaleOrders[]) => {
+        }, (error, pendingOrder: SaleOrders[]) => {
             if (error) {
                 console.error("Unable to fetch orders from file. For more info ->" + error);
                 reject(error);
             } else {
-                const pendingOrders = result.filter(order => order.shipment_status === "Pending");
-                resolve(pendingOrders);
+                const pendingOrders = pendingOrder.filter(order => order.shipment_status === "Pending");
+                resolve(pendingOrders)
+                return pendingOrders;
             }
         });
     });
@@ -53,13 +57,13 @@ export async function getStores() {
         parse(ordersFileContent, {
             delimiter: ',',
             columns: orderTableHeaders,
-        }, (error, result: Stores[]) => {
+        }, (error, storesList: Stores[]) => {
             if (error) {
                 console.error("Unable to fetch orders from file. For more info ->" + error);
                 reject(error);
             }
-            const stores = result
-            resolve(stores)
+            resolve(storesList)
+            return storesList;
 
         });
     })
