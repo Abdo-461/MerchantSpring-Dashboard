@@ -10,11 +10,15 @@ const port = 8080;
 app.use(cors());
 app.get("/user", getUser);
 
-app.get("/sales", (req, res) => {
+app.get("/orders/pending", (req, res) => {
   
-  console.log(getPendingOrders());
-  console.log(getStores());
+  const pendingOrders = getPendingOrders();
+  res.send(JSON.stringify(pendingOrders));
+});
 
+app.get('/stores', (req, res) => {
+  const stores = getStores();
+  res.send(JSON.stringify(stores));
 });
 
 app.listen(port, () => {
