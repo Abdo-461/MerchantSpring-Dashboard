@@ -22,6 +22,7 @@ type Stores = {
 };
 
 export async function getPendingOrders() {
+
     const saleOrdersFile = path.resolve('./data/orders.csv');
     const orderTableHeaders = ['id', 'storeId', 'orderId', 'latest_ship_date', 'shipment_status', 'destination', 'items', 'orderValue'];
     const ordersFileContent = fs.readFileSync(saleOrdersFile, { encoding: 'utf-8' });
@@ -59,7 +60,7 @@ export async function getStores() {
             }
             const stores = result
             resolve(stores)
-    
+
         });
     })
 };
