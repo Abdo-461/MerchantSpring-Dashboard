@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
+import Dashboard from './components/Dashboard';
+
 const AppWrapper = styled.div`
   height: 100vh;
   width: 100vw;
@@ -48,7 +50,7 @@ const App = () => {
         <HeaderText>Analytics Dashboard</HeaderText>
         <Username>Welcome, {user ? user.firstName : "Guest"}!</Username>
       </AppHeader>
-      {/** Dashboard - new widgets go here */}
+      <Dashboard />
     </AppWrapper>
   );
 };
