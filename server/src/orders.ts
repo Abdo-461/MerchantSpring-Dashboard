@@ -32,6 +32,7 @@ export async function getPendingOrders() {
         parse(ordersFileContent, {
             delimiter: ',',
             columns: orderTableHeaders,
+            from_line: 2,
         }, (error, pendingOrder: SaleOrders[]) => {
             if (error) {
                 console.error("Unable to fetch orders from file. For more info ->" + error);
@@ -55,6 +56,7 @@ export async function getStores() {
         parse(ordersFileContent, {
             delimiter: ',',
             columns: orderTableHeaders,
+            from_line: 2,
         }, (error, storesList: Stores[]) => {
             if (error) {
                 console.error("Unable to fetch orders from file. For more info ->" + error);
