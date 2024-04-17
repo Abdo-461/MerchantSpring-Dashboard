@@ -12,18 +12,6 @@ interface Order {
     latest_ship_date: Date;
 }
 
-// const Order: {
-//     id: number,
-//     country: string;
-//     marketplace: string;
-//     shopName: string;
-//     orderId: string;
-//     orderValue: number;
-//     items: number;
-//     destination: string;
-//     latest_ship_date: Date;
-// }[] = [];
-
 interface OrdersProps {
     order: Order[];
 }

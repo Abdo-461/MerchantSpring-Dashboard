@@ -45,17 +45,6 @@ export default function Dashboard() {
     let [dataOndashboard, setDataOnDashboard] = useState<DashboardData[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // const test2 = {
-    //     country: "AUS",
-    //     marketplace: "AMAZON",
-    //     shopName: "JB-HIFI",
-    //     orderId: "heikedodoo0020dk",
-    //     orderValue: 116,
-    //     items: 10,
-    //     destination: "MElB",
-    //     date: "12/11/1993",
-    // }
-
     useEffect(() => {
 
         // fetch data from 2 apis
@@ -102,8 +91,6 @@ export default function Dashboard() {
                 });
 
                 setDataOnDashboard(dashboardData);
-                
-                console.log("I am done", dashboardData);
                 setIsLoaded(true);
                 return;
 
@@ -115,7 +102,11 @@ export default function Dashboard() {
     }, []);
 
     if (!isLoaded) {
-        return <div>Loading...</div>;
+        return (
+            <div className='isloaded-container'>
+                <div className="isloaded-message">Loading...</div>
+            </div>
+        )
     }
     else {
         return (

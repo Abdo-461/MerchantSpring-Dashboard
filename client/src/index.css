@@ -13,3 +13,18 @@ body {
     transform: translate(-50%, -50%);
     background-color: white;
 }
+
+
+.isloaded-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    transform: translate(-50%, -50%);
+    background-color: white;
+}
+
+.isloaded-message {
+    display: flex;
+    justify-content: center;
+}
