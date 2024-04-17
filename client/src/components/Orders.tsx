@@ -21,9 +21,9 @@ const Orders = ({order}: OrdersProps) => {
         <tbody>
             {order.map((item: { id: number; country: string; marketplace: string; shopName: string; orderId: string; orderValue: number; items: number; destination: string; latest_ship_date: Date }) => (
                 <tr key={item.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    {/* <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
                         {item.country}
-                    </td>
+                    </td> */}
                     <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
                         {item.marketplace}
                     </td>
