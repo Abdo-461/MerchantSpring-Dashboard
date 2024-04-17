@@ -123,7 +123,6 @@ export default function Dashboard() {
 	else {
 		return (
 			<>
-				<h3 className="text-lg font-semibold p-4">Analytics Dashboard</h3>
 				<div className='dashboard-container'>
 					<div className='table-container'>
 						<div className="border rounded-lg overflow-hidden">
