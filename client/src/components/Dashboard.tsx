@@ -35,7 +35,7 @@ export default function Dashboard() {
     let storesList: any;
     let [dataOndashboard, setDataOnDashboard] = useState<DashboardData[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [recordsPerPage] = useState(10);
+    const [recordsPerPage] = useState(5);
     const [isLoaded, setIsLoaded] = useState(false);
 
     let indexOfLastRecord: any;
@@ -89,6 +89,7 @@ export default function Dashboard() {
 
                 console.log("oppie:", dashboardData);
 
+                // organize array of data to used pagination
                 indexOfLastRecord = currentPage * recordsPerPage;
                 indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
                 slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
