@@ -4,6 +4,7 @@ import Orders from './Orders';
 
 export default function Dashboard() {
 
+    // an array to hold combined data from fetching apis
     const dashboardData: {
         id: number,
         country: string;
@@ -16,18 +17,7 @@ export default function Dashboard() {
         latest_ship_date: Date;
     }[] = [];
 
-    interface Order {
-        id: number,
-        country: string;
-        marketplace: string;
-        shopName: string;
-        orderId: string;
-        orderValue: number;
-        items: number;
-        destination: string;
-        latest_ship_date: Date;
-    };
-
+    // an interface to use when defining state to hold data to pass to props
     interface DashboardData {
         id: number,
         country: string;
@@ -46,7 +36,6 @@ export default function Dashboard() {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-
         // fetch data from 2 apis
         const getOrdersData = async () => {
             try {
@@ -69,7 +58,7 @@ export default function Dashboard() {
                 console.error('Error fetching data:', error);
             }
         };
-
+        // combine 2 data sets to form one data set to show on dashboard
         const getAllPendingOrders = async () => {
             try {
                 storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
