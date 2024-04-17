@@ -8,6 +8,7 @@ export default function Dashboard() {
     let storesList: any;
     const [isLoaded, setIsLoaded] = useState(false);
     const dashboardData: {
+        storeId: number,
         country: string;
         marketplace: string;
         shopName: string;
@@ -21,6 +22,7 @@ export default function Dashboard() {
     let [order, setOrder] = useState<Order[]>([]);
 
     interface Order {
+        storeId: number,
         country: string;
         marketplace: string;
         shopName: string;
@@ -73,6 +75,7 @@ export default function Dashboard() {
                     pendingOrders.forEach((orderKey: { storeId: number; orderId: string; orderValue: number; items: number; destination: string, latest_ship_date: Date }) => {
                         if (orderKey.storeId === storeKey.storeId) {
                             dashboardData.push({
+                                storeId: storeKey.storeId,
                                 country: storeKey.country,
                                 marketplace: storeKey.marketplace,
                                 shopName: storeKey.shopName,
