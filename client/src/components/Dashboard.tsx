@@ -1,69 +1,46 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import Orders from './Orders';
 
 
 export default function Dashboard() {
 
-    // interface PendingOrderListProps {
-    //     ordersList: {
-    //         marketplace: string,
-    //         store: string,
-    //         orderId: string,
-    //         orderValue: string,
-    //         items: number,
-    //         destination: string,
-    //         date: Date
-    //     }
-    // }
-
-    // type Stores = {
-    //     storeId: number,
-    //     marketplace: string,
-    //     country: string,
-    //     shopName: string
-    // };
-
-    // interface OrdersTest {
-    //     id: number;
-    //     storeId: number;
-    //     orderId: string;
-    //     latest_ship_date: Date;
-    //     shipment_status: string;
-    //     destination: string;
-    //     items: number;
-    //     orderValue: number;
-    // }
-
-    // a small component to display the contents of the table
-    // const pendingOrderList: React.FC<PendingOrderListProps> = (props) => (
-    //     <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-    //         <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-    //             {props.ordersList.marketplace}
-    //         </td>
-    //         <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-    //             {props.ordersList.store}
-    //         </td>
-    //         <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-    //             {props.ordersList.orderId}
-    //         </td>
-    //         <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-    //             {props.ordersList.orderValue}
-    //         </td>
-    //         <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-    //             {props.ordersList.items}
-    //         </td>
-    //         <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-    //             {props.ordersList.destination}
-    //         </td>
-    //         <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-    //             {props.ordersList.date}
-    //         </td>
-    //     </tr>
-    // );
-
-    const [isLoaded, setIsLoaded] = useState(false);
     let pendingOrders: any;
     let storesList: any;
+    const [isLoaded, setIsLoaded] = useState(false);
+    const dashboardData: {
+        country: string;
+        marketplace: string;
+        shopName: string;
+        orderId: string;
+        orderValue: number;
+        items: number;
+        destination: string;
+        latest_ship_date: Date;
+    }[] = [];
 
+    let [order, setOrder] = useState<Order[]>([]);
+
+    interface Order {
+        country: string;
+        marketplace: string;
+        shopName: string;
+        orderId: string;
+        orderValue: number;
+        items: number;
+        destination: string;
+        latest_ship_date: Date;
+    };
+
+    // const test2 = {
+    //     country: "AUS",
+    //     marketplace: "AMAZON",
+    //     shopName: "JB-HIFI",
+    //     orderId: "heikedodoo0020dk",
+    //     orderValue: 116,
+    //     items: 10,
+    //     destination: "MElB",
+    //     date: "12/11/1993",
+    // }
 
     useEffect(() => {
 
@@ -84,23 +61,16 @@ export default function Dashboard() {
                     return;
                 }
 
-                console.log("1st dataset", pendingOrders);
-                console.log("2nd dataset", storesList);
-
                 getAllPendingOrders();
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-
-        const dashboardData: { country: string, marketplace: string, shopName: string, orderId: string, orderValue: number, items: number, destination: string }[] = [];
         const getAllPendingOrders = async () => {
-            let storeKey: any;
-            let orderKey: any;
             try {
                 storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
-                    pendingOrders.forEach((orderKey: { storeId: number; orderId: string; orderValue: number; items: number; destination: string }) => {
+                    pendingOrders.forEach((orderKey: { storeId: number; orderId: string; orderValue: number; items: number; destination: string, latest_ship_date: Date }) => {
                         if (orderKey.storeId === storeKey.storeId) {
                             dashboardData.push({
                                 country: storeKey.country,
@@ -109,14 +79,17 @@ export default function Dashboard() {
                                 orderId: orderKey.orderId,
                                 orderValue: orderKey.orderValue,
                                 items: orderKey.items,
-                                destination: orderKey.destination
+                                destination: orderKey.destination,
+                                latest_ship_date: orderKey.latest_ship_date
                             });
                         };
                     });
                 });
 
-                setIsLoaded(true);
+                
                 console.log("I am done", dashboardData);
+                setOrder(dashboardData);
+                setIsLoaded(true);
                 return;
 
             } catch (error) {
@@ -131,8 +104,44 @@ export default function Dashboard() {
     }
     else {
         return (
-            <><h2>hi</h2>
-                <div>I am done</div>
+            <>
+                <h3 className="text-lg font-semibold p-4">Analytics Dashboard</h3>
+                <div className='dashboard-container'>
+                    <div className='table-container'>
+                        <div className="border rounded-lg overflow-hidden">
+                            <div className="relative w-full overflow-auto">
+                                <table className="w-full caption-bottom text-sm table-auto">
+                                    <thead className="[&amp;_tr]:border-b">
+                                        <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                            <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                MARKETPLACE
+                                            </th>
+                                            <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                STORE
+                                            </th>
+                                            <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                ORDER ID
+                                            </th>
+                                            <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                ORDER VALUE
+                                            </th>
+                                            <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                ITEMS
+                                            </th>
+                                            <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                DESTINATION
+                                            </th>
+                                            <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                DAYS OVERDUE
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <Orders order={order} />
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </>
         );
     }
