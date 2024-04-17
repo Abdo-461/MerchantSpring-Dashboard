@@ -4,11 +4,8 @@ import Orders from './Orders';
 
 export default function Dashboard() {
 
-    let pendingOrders: any;
-    let storesList: any;
-    const [isLoaded, setIsLoaded] = useState(false);
     const dashboardData: {
-        storeId: number,
+        id: number,
         country: string;
         marketplace: string;
         shopName: string;
@@ -19,10 +16,8 @@ export default function Dashboard() {
         latest_ship_date: Date;
     }[] = [];
 
-    let [order, setOrder] = useState<Order[]>([]);
-
     interface Order {
-        storeId: number,
+        id: number,
         country: string;
         marketplace: string;
         shopName: string;
@@ -32,6 +27,23 @@ export default function Dashboard() {
         destination: string;
         latest_ship_date: Date;
     };
+
+    interface DashboardData {
+        id: number,
+        country: string;
+        marketplace: string;
+        shopName: string;
+        orderId: string;
+        orderValue: number;
+        items: number;
+        destination: string;
+        latest_ship_date: Date;
+    };
+
+    let pendingOrders: any;
+    let storesList: any;
+    let [dataOndashboard, setDataOnDashboard] = useState<DashboardData[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // const test2 = {
     //     country: "AUS",
@@ -72,10 +84,10 @@ export default function Dashboard() {
         const getAllPendingOrders = async () => {
             try {
                 storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
-                    pendingOrders.forEach((orderKey: { storeId: number; orderId: string; orderValue: number; items: number; destination: string, latest_ship_date: Date }) => {
+                    pendingOrders.forEach((orderKey: { id: number; storeId: number; orderId: string; orderValue: number; items: number; destination: string, latest_ship_date: Date }) => {
                         if (orderKey.storeId === storeKey.storeId) {
                             dashboardData.push({
-                                storeId: storeKey.storeId,
+                                id: orderKey.id,
                                 country: storeKey.country,
                                 marketplace: storeKey.marketplace,
                                 shopName: storeKey.shopName,
@@ -89,9 +101,9 @@ export default function Dashboard() {
                     });
                 });
 
+                setDataOnDashboard(dashboardData);
                 
                 console.log("I am done", dashboardData);
-                setOrder(dashboardData);
                 setIsLoaded(true);
                 return;
 
@@ -139,7 +151,7 @@ export default function Dashboard() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <Orders order={order} />
+                                    <Orders order={dataOndashboard} />
                                 </table>
                             </div>
                         </div>
