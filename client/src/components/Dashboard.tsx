@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Orders from './Orders';
+import Pagination from './Pagination';
 
 
 export default function Dashboard() {
@@ -33,7 +34,14 @@ export default function Dashboard() {
     let pendingOrders: any;
     let storesList: any;
     let [dataOndashboard, setDataOnDashboard] = useState<DashboardData[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recordsPerPage] = useState(10);
     const [isLoaded, setIsLoaded] = useState(false);
+
+    let indexOfLastRecord: any;
+    let indexOfFirstRecord: any;
+    let nPages: any;
+    let slicedData: any;
 
     useEffect(() => {
         // fetch data from 2 apis
@@ -79,21 +87,41 @@ export default function Dashboard() {
                     });
                 });
 
-                setDataOnDashboard(dashboardData);
+                console.log("oppie:", dashboardData);
+
+                indexOfLastRecord = currentPage * recordsPerPage;
+                indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+                slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
+                nPages = Math.ceil(dashboardData.length / recordsPerPage);
+
+                setDataOnDashboard(slicedData);
                 setIsLoaded(true);
+
+                console.log("this is state:", dataOndashboard);
+
+                console.log("byeeeee");
                 return;
 
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
+
+        // organize data into a pagination - for faster rendering
+        // const displayOrderInPagination = async () => {
+            
+        // }
+
         getOrdersData();
     }, []);
+
+
 
     if (!isLoaded) {
         return (
             <div className='isloaded-container'>
                 <div className="isloaded-message">Loading...</div>
+                <div className="isloaded-message">This might take a while. Hang on!</div>
             </div>
         )
     }
@@ -132,6 +160,11 @@ export default function Dashboard() {
                                         </tr>
                                     </thead>
                                     <Orders order={dataOndashboard} />
+                                    <Pagination
+                                        nPages={nPages}
+                                        currentPage={currentPage}
+                                        setCurrentPage={setCurrentPage}
+                                    />
                                 </table>
                             </div>
                         </div>

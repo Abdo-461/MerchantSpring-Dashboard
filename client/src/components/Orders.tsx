@@ -13,7 +13,7 @@ interface Order {
 }
 
 interface OrdersProps {
-    order: Order[];
+    order: any;
 }
 
 const Orders = ({order}: OrdersProps) => {
