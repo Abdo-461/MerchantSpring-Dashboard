@@ -4,8 +4,6 @@ const Pagination = ({ nPages, currentPage, setCurrentPage }) => {
 
     const pageNumbers = [...Array(nPages).keys()].map(i => i + 1);
 
-    
-
     const goToNextPage = () => {
             if(currentPage !== nPages) setCurrentPage(currentPage + 1)
     }
@@ -23,7 +21,7 @@ const Pagination = ({ nPages, currentPage, setCurrentPage }) => {
                         Previous
                     </a>
                 </li>
-                {pageNumbers.map(pgNumber => (
+                {pageNumbers.slice(-5).map(pgNumber => (
                     <li key={pgNumber} 
                         className= {`page-item ${currentPage == pgNumber ? 'active' : ''} `} >
 

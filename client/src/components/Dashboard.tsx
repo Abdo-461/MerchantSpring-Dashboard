@@ -34,7 +34,7 @@ export default function Dashboard() {
 	// for manipulating and displaying data
 	let pendingOrders: any;
 	let storesList: any;
-	let [dataOndashboard, setDataOnDashboard] = useState<DashboardData[]>([]);
+	let [dataOnDashboard, setDataOnDashboard] = useState<DashboardData[]>([]);
 
 
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -42,8 +42,8 @@ export default function Dashboard() {
 	// Pagination variables
 	let indexOfLastRecord: any;
 	let indexOfFirstRecord: any;
-	let nPages: any;
-	let slicedData: any;
+	let slicedData: any[] = [];
+	const [nPages, setNPages] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage] = useState(5);
 
@@ -91,22 +91,22 @@ export default function Dashboard() {
 					});
 				});
 
-				organizeDataIntoPagination();
+				console.log(dashboardData);
+
+				indexOfLastRecord = currentPage * recordsPerPage;
+				indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+				slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
+
+				console.log("slice bitch", slicedData);
 
 				setDataOnDashboard(slicedData);
+				setNPages(Math.ceil(dashboardData.length / recordsPerPage));
 				setIsLoaded(true);
 				return;
 
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
-		}
-
-		const organizeDataIntoPagination = async () => {
-			indexOfLastRecord = currentPage * recordsPerPage;
-			indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-			slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
-			nPages = Math.ceil(dashboardData.length / recordsPerPage);
 		}
 
 		getOrdersData();
@@ -153,13 +153,13 @@ export default function Dashboard() {
 											</th>
 										</tr>
 									</thead>
-									<Orders order={dataOndashboard} />
-									<Pagination
+									<Orders order={dataOnDashboard} />
+								</table>
+								<Pagination
 										nPages={nPages}
 										currentPage={currentPage}
 										setCurrentPage={setCurrentPage}
 									/>
-								</table>
 							</div>
 						</div>
 					</div>
