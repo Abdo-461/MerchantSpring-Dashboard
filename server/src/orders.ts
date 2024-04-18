@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path, { resolve } from 'path';
 import { parse } from 'csv';
-import { rejects } from 'assert';
-import { json } from 'stream/consumers';
 
 type SaleOrders = {
     id: number,
