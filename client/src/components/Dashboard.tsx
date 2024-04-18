@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Orders from './Orders';
 import Pagination from './Pagination';
+import { calculateDaysOverdue } from "./helper";
 
 
 export default function Dashboard() {
@@ -35,7 +36,6 @@ export default function Dashboard() {
 	let pendingOrders: any;
 	let storesList: any;
 	let [dataOnDashboard, setDataOnDashboard] = useState<DashboardData[]>([]);
-
 
 	const [isLoaded, setIsLoaded] = useState(false);
 
@@ -91,13 +91,9 @@ export default function Dashboard() {
 					});
 				});
 
-				console.log(dashboardData);
-
 				indexOfLastRecord = currentPage * recordsPerPage;
 				indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
 				slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
-
-				console.log("slice bitch", slicedData);
 
 				setDataOnDashboard(slicedData);
 				setNPages(Math.ceil(dashboardData.length / recordsPerPage)); // <- calculate number of pages
@@ -108,27 +104,6 @@ export default function Dashboard() {
 				console.error('Error fetching data:', error);
 			}
 		}
-
-		// a method to calculate days overdue
-		function calculateDaysOverdue(latestShipDate: Date): number {
-
-			const dateToday = new Date ();
-			const shipDate = convertDateFormat(latestShipDate.toString());
-			let differenceInTime = dateToday.getTime() - new Date(shipDate).getTime();
-			let differenceInDays = Math.round(differenceInTime/ (1000 * 3600 * 24));
-			
-			return differenceInDays;
-		}
-
-		// a method to convert date format from dd/mm/yyyy to mm/dd/yyyy
-		function convertDateFormat(inputDate: string): string {
-
-			const [day, month, year] = inputDate.split('/');
-			const newDateString = `${month}/${day}/${year}`;
-		
-			return newDateString;
-		}
-
 		getOrdersData();
 	}, []);
 
