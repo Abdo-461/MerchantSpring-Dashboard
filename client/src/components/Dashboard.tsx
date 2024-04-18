@@ -47,6 +47,41 @@ export default function Dashboard() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage] = useState(7);
 
+	// combine 2 data sets to form one data set to show on dashboard
+	const getAllPendingOrders = async () => {
+		try {
+			storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
+				pendingOrders.forEach((orderKey: { id: number; storeId: number; orderId: string; orderValue: number; items: number; destination: string, latest_ship_date: Date }) => {
+					if (orderKey.storeId === storeKey.storeId) {
+						dashboardData.push({
+							id: orderKey.id,
+							country: storeKey.country,
+							marketplace: storeKey.marketplace,
+							shopName: storeKey.shopName,
+							orderId: orderKey.orderId,
+							orderValue: orderKey.orderValue,
+							items: orderKey.items,
+							destination: orderKey.destination,
+							latest_ship_date: calculateDaysOverdue(orderKey.latest_ship_date)
+						});
+					};
+				});
+			});
+
+			indexOfLastRecord = currentPage * recordsPerPage;
+			indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+			slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
+
+			setDataOnDashboard(slicedData);
+			setNPages(Math.ceil(dashboardData.length / recordsPerPage)); // <- calculate number of pages
+			setIsLoaded(true);
+			return;
+
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	}
+
 	useEffect(() => {
 		// fetch data from 2 apis
 		const getOrdersData = async () => {
@@ -70,40 +105,7 @@ export default function Dashboard() {
 				console.error('Error fetching data:', error);
 			}
 		};
-		// combine 2 data sets to form one data set to show on dashboard
-		const getAllPendingOrders = async () => {
-			try {
-				storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
-					pendingOrders.forEach((orderKey: { id: number; storeId: number; orderId: string; orderValue: number; items: number; destination: string, latest_ship_date: Date }) => {
-						if (orderKey.storeId === storeKey.storeId) {
-							dashboardData.push({
-								id: orderKey.id,
-								country: storeKey.country,
-								marketplace: storeKey.marketplace,
-								shopName: storeKey.shopName,
-								orderId: orderKey.orderId,
-								orderValue: orderKey.orderValue,
-								items: orderKey.items,
-								destination: orderKey.destination,
-								latest_ship_date: calculateDaysOverdue(orderKey.latest_ship_date)
-							});
-						};
-					});
-				});
-
-				indexOfLastRecord = currentPage * recordsPerPage;
-				indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-				slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
-
-				setDataOnDashboard(slicedData);
-				setNPages(Math.ceil(dashboardData.length / recordsPerPage)); // <- calculate number of pages
-				setIsLoaded(true);
-				return;
-
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		}
+		
 		getOrdersData();
 	}, []);
 
