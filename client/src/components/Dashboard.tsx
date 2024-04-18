@@ -122,39 +122,12 @@ export default function Dashboard() {
 					<div className='table-container'>
 						<div className="border rounded-lg overflow-hidden">
 							<div className="relative w-full overflow-auto">
-								<table className="w-full caption-bottom text-sm table-auto">
-									<thead className="[&amp;_tr]:border-b table-head">
-										<tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-											<th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-												MARKETPLACE
-											</th>
-											<th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-												STORE
-											</th>
-											<th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-												ORDER ID
-											</th>
-											<th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-												ORDER VALUE
-											</th>
-											<th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-												ITEMS
-											</th>
-											<th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-												DESTINATION
-											</th>
-											<th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-												DAYS OVERDUE
-											</th>
-										</tr>
-									</thead>
-									<Orders order={dataOnDashboard} />
-								</table>
-								<Pagination
+								<Orders order={dataOnDashboard} />
+								{/* <Pagination
 										nPages={nPages}
 										currentPage={currentPage}
 										setCurrentPage={setCurrentPage}
-									/>
+									/> */}
 							</div>
 						</div>
 					</div>
