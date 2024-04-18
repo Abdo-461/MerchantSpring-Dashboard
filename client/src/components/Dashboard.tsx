@@ -15,7 +15,7 @@ export default function Dashboard() {
 		orderValue: number;
 		items: number;
 		destination: string;
-		latest_ship_date: Date;
+		latest_ship_date: number;
 	}[] = [];
 
 	// an interface to use when defining state to hold data to pass to props
@@ -28,7 +28,7 @@ export default function Dashboard() {
 		orderValue: number;
 		items: number;
 		destination: string;
-		latest_ship_date: Date;
+		latest_ship_date: number;
 	};
 
 	// for manipulating and displaying data
@@ -45,7 +45,7 @@ export default function Dashboard() {
 	let slicedData: any[] = [];
 	const [nPages, setNPages] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [recordsPerPage] = useState(5);
+	const [recordsPerPage] = useState(7);
 
 	useEffect(() => {
 		// fetch data from 2 apis
@@ -85,7 +85,7 @@ export default function Dashboard() {
 								orderValue: orderKey.orderValue,
 								items: orderKey.items,
 								destination: orderKey.destination,
-								latest_ship_date: orderKey.latest_ship_date
+								latest_ship_date: calculateDaysOverdue(orderKey.latest_ship_date)
 							});
 						};
 					});
@@ -100,13 +100,33 @@ export default function Dashboard() {
 				console.log("slice bitch", slicedData);
 
 				setDataOnDashboard(slicedData);
-				setNPages(Math.ceil(dashboardData.length / recordsPerPage));
+				setNPages(Math.ceil(dashboardData.length / recordsPerPage)); // <- calculate number of pages
 				setIsLoaded(true);
 				return;
 
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
+		}
+
+		// a method to calculate days overdue
+		function calculateDaysOverdue(latestShipDate: Date): number {
+
+			const dateToday = new Date ();
+			const shipDate = convertDateFormat(latestShipDate.toString());
+			let differenceInTime = dateToday.getTime() - new Date(shipDate).getTime();
+			let differenceInDays = Math.round(differenceInTime/ (1000 * 3600 * 24));
+			
+			return differenceInDays;
+		}
+
+		// a method to convert date format from dd/mm/yyyy to mm/dd/yyyy
+		function convertDateFormat(inputDate: string): string {
+
+			const [day, month, year] = inputDate.split('/');
+			const newDateString = `${month}/${day}/${year}`;
+		
+			return newDateString;
 		}
 
 		getOrdersData();
