@@ -47,68 +47,56 @@ export default function Dashboard() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage] = useState(7);
 
-	// get data to show on the dashboard
-	const getAllPendingOrders = async () => {
-		try {
-			storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
-				pendingOrders.forEach((orderKey: { id: number; storeId: number; orderId: string; orderValue: number; items: number; destination: string, latest_ship_date: Date }) => {
-					if (orderKey.storeId === storeKey.storeId) {
-						dashboardData.push({
-							id: orderKey.id,
-							country: storeKey.country,
-							marketplace: storeKey.marketplace,
-							shopName: storeKey.shopName,
-							orderId: orderKey.orderId,
-							orderValue: orderKey.orderValue,
-							items: orderKey.items,
-							destination: orderKey.destination,
-							latest_ship_date: calculateDaysOverdue(orderKey.latest_ship_date)
-						});
-					};
-				});
-			});
-
-			indexOfLastRecord = currentPage * recordsPerPage;
-			indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-			slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
-
-			setDataOnDashboard(slicedData);
-			//setNPages(Math.ceil(dashboardData.length / recordsPerPage)); // <- calculate number of pages
-			setIsLoaded(true);
-			return;
-
-		} catch (error) {
-			console.error('Error fetching data:', error);
-		}
-	}
-
 	useEffect(() => {
-		// fetch data from 2 apis
-		const getOrdersData = async () => {
-			try {
-				// orders pending
-				const pendingOrdersListResponse = await fetch(`http://localhost:8080/orders/pending`);
-				pendingOrders = await pendingOrdersListResponse.json();
+        let pendingOrders: any[];
+        let storesList;
 
-				// stores
-				const storesListResponse = await fetch(`http://localhost:8080/stores`);
-				storesList = await storesListResponse.json();
+        const getAllPendingOrders = async () => {
+            try {
+                const pendingOrdersListResponse = await fetch(`http://localhost:8080/orders/pending`);
+                const storesListResponse = await fetch(`http://localhost:8080/stores`);
 
-				if (!pendingOrdersListResponse.ok || !storesListResponse.ok) {
-					const message = "Error occured";
-					console.error(message);
-					return;
-				}
+                if (!pendingOrdersListResponse.ok || !storesListResponse.ok) {
+                    console.error("Error occurred");
+                    return;
+                }
 
-				getAllPendingOrders();
+                pendingOrders = await pendingOrdersListResponse.json();
+                storesList = await storesListResponse.json();
 
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		};
-		
-		getOrdersData();
-	}, []);
+                const dashboardData: { id: any; country: any; marketplace: any; shopName: any; orderId: any; orderValue: any; items: any; destination: any; latest_ship_date: number; }[] = [];
+
+                storesList.forEach((storeKey: { storeId: any; country: any; marketplace: any; shopName: any; }) => {
+                    pendingOrders.forEach((orderKey) => {
+                        if (orderKey.storeId === storeKey.storeId) {
+                            dashboardData.push({
+                                id: orderKey.id,
+                                country: storeKey.country,
+                                marketplace: storeKey.marketplace,
+                                shopName: storeKey.shopName,
+                                orderId: orderKey.orderId,
+                                orderValue: orderKey.orderValue,
+                                items: orderKey.items,
+                                destination: orderKey.destination,
+                                latest_ship_date: calculateDaysOverdue(orderKey.latest_ship_date)
+                            });
+                        }
+                    });
+                });
+
+                const indexOfLastRecord = currentPage * recordsPerPage;
+                const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+                const slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
+
+                setDataOnDashboard(slicedData);
+                setIsLoaded(true);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        getAllPendingOrders();
+    }, [currentPage, recordsPerPage]); // Add dependencies if needed
 
 	if (!isLoaded) {
 		return (
