@@ -95,7 +95,7 @@ export default function Dashboard() {
         };
 
         getAllPendingOrders();
-    }, [currentPage, recordsPerPage]); // Add dependencies if needed
+    }, [currentPage, recordsPerPage]);
 
 	if (!isLoaded) {
 		return (
