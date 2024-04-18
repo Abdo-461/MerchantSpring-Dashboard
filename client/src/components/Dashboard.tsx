@@ -113,11 +113,6 @@ export default function Dashboard() {
 						<div className="border rounded-lg overflow-hidden">
 							<div className="relative w-full overflow-auto">
 								<Orders order={dataOnDashboard} />
-								{/* <Pagination
-										nPages={nPages}
-										currentPage={currentPage}
-										setCurrentPage={setCurrentPage}
-									/> */}
 							</div>
 						</div>
 					</div>
