@@ -30,3 +30,16 @@ This coding challenge is designed to assess how you approach and solve a problem
 - The code should run locally on your machine (doesn't need to be deployed anywhere)
 - Please check the completed challenge in to a git repository and email us the link
 - If you have any questions about the challenge or the requirements please feel free to reach out to the team and we will answer them :)
+
+
+## The solution
+
+-This reposiotry contains the code solution to the above requirments.
+-The back-end application uses Node Js to fetch data from two CSV files.
+-The front-end applications fetches the data from the API and displays them on the front-end page.
+-The font-end applications allows for sorting of the list presented. Please click the column 'DAYS OVERDUE' to sort data in desc or asec order.
+-The wireframe shows a pagniation feature. This app doesn't support pagination as I will require more time to investigate and understand the concept before applying and that will take a longer time than intially anticipated. With some guidance and research, I can confidently apply that feature.
+-Testing has been done manually and all cases has status of 'Pass'.
+-Based on the requirments specified above, the coding challenge is concluded with status of 'DONE'.
+-A review has been done by a former colleague to ensure highest quality code submitted. 
+-Please reach out to me for any questions or clarifications.
