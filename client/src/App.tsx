@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
+import Dashboard from './components/Dashboard';
+
+
 const AppWrapper = styled.div`
   height: 100vh;
   width: 100vw;
@@ -14,14 +17,17 @@ const AppHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0rem 2rem;
+  height: 5em;
 `;
 
 const HeaderText = styled.h1`
   font-family: "Roboto", sans-serif;
+  font-weight: bold;
 `;
 
 const Username = styled.span`
   font-family: "Roboto", sans-serif;
+  font-weight: bold;
 `;
 
 interface User {
@@ -48,7 +54,7 @@ const App = () => {
         <HeaderText>Analytics Dashboard</HeaderText>
         <Username>Welcome, {user ? user.firstName : "Guest"}!</Username>
       </AppHeader>
-      {/** Dashboard - new widgets go here */}
+      <Dashboard />
     </AppWrapper>
   );
 };
