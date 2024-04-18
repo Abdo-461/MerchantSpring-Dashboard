@@ -85,7 +85,7 @@ export default function Dashboard() {
 
                 const indexOfLastRecord = currentPage * recordsPerPage;
                 const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-                const slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
+                const slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord); // dashboard data that is displayed on page
 
                 setDataOnDashboard(slicedData);
                 setIsLoaded(true);
