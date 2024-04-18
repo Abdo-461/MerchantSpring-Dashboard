@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Orders from './Orders';
-import Pagination from './Pagination';
 import { calculateDaysOverdue } from "./helper";
 
 
