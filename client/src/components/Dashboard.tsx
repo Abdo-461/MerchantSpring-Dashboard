@@ -47,7 +47,7 @@ export default function Dashboard() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage] = useState(7);
 
-	// combine 2 data sets to form one data set to show on dashboard
+	// get data to show on the dashboard
 	const getAllPendingOrders = async () => {
 		try {
 			storesList.forEach((storeKey: { storeId: number; country: string; marketplace: string; shopName: string; }) => {
@@ -73,7 +73,7 @@ export default function Dashboard() {
 			slicedData = dashboardData.slice(indexOfFirstRecord, indexOfLastRecord);
 
 			setDataOnDashboard(slicedData);
-			setNPages(Math.ceil(dashboardData.length / recordsPerPage)); // <- calculate number of pages
+			//setNPages(Math.ceil(dashboardData.length / recordsPerPage)); // <- calculate number of pages
 			setIsLoaded(true);
 			return;
 
@@ -101,6 +101,7 @@ export default function Dashboard() {
 				}
 
 				getAllPendingOrders();
+
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
